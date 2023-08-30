@@ -1,0 +1,178 @@
+syntax="proto3";
+package SocketProto;
+
+enum RequestCode
+{
+     RequestNone=0;
+     User=1;//用户
+     Room=2;//房间
+     Friend=3;
+     FriendRoom=4;
+     PingPong=5;//心跳机制
+}
+
+enum ActionCode
+{
+     ActionNone=0; 
+    //注册  
+     Logon=1;
+    //登陆
+     Login=2;  
+    //房间
+    CreateRoom=3;
+    FindRoom=4;
+    //玩家列表
+    PlayerList=5;
+    //加入房间
+    JoinRoom=6;
+    //离开
+    Exit=7;
+    //聊天
+    Chat=8;
+    //申请添加好友
+    AplyAddFriend=9;
+    //邀请好友进入房间
+    InviteFriend=10;
+   //找到名字
+   FindName=11;
+   //修改名字
+   UpdateName=12;
+  //同意加好友
+  AcceptAddFriend=13;
+  RejectAddFriend=14;
+  FindPlayerInfo=15;
+  FindFriendsInfo=16;
+  FriendLogin=17;//好友上号
+  FriendLogout=18;//好友下号
+  AcceptInvateFriend=19;
+  RejectInvateFriend=20;
+  CancalInvateFriend=21;
+  ExitRoom=22;
+  GetFriendRoomInfo=23;
+  Ping=24;
+  Pong=25;
+  ChangeHero=26;//更新英雄
+  UpDateActiveFriendInfo=27;//更新活跃好友
+}
+
+enum ReturnCode
+{
+      ReturnNone=0;
+      //成功
+      Succeed=1;
+      //失败
+      Fail=2;
+      //没有房间
+      NotRoom=3;
+     //加好友类型
+     AddFriend=4;
+}
+enum RoomState
+{
+	RoomNormal=0;
+	RoomFull=1;
+	RoomGame=2;
+}
+enum  PlayerState
+{
+	PlayerOnline=0;
+	PlayerOutline=1;
+	PlayerGame=2;
+	PlayerOnRoom=3;
+	PlayerOnInvated=4;
+	
+}
+enum Hero
+{
+XueLi=0;
+KeErTe=1;
+PeiPei=2;
+PanNi=3;
+BaLi=4;
+GongNiu=5;
+DaLiEr=6;
+GeEr=7;
+BuLuoKe=8;
+BaoPoMaiKe=9;
+ABo=10;
+DiKe=11;
+BeiYa=12;
+TaLa=13;
+MaiKeSi=14;
+SiPaiKe=15;
+HeiYa=16;
+LiAng=17;
+PaMu=18;
+RuiKe=19;
+}
+enum Model
+{
+BaoShiZhengBa=0;
+JinKuGongFang=1;
+ShangJinLieRen=2;
+LuanDouZuQiu=3;
+HuangYeJueDou=4;
+ShangJinLieRen=5;
+}
+
+message MainPack
+{
+       RequestCode requestcode=1;
+       ActionCode   actioncode=2;
+       ReturnCode  returncode=3;
+       LoginPack loginpack=4;
+       string str=5;
+       repeated RoomPack roompack=6;//这样就是roompack数组了
+       repeated PlayerPack friendspack=7;
+       PlayerPack userInfopack=8;
+       repeated FriendRoomPack friendroompack=9;
+       repeated PlayerPack playerspack=10;
+       ChatPack chatpack=11;
+}
+message ChatPack
+{
+	string playername=1;
+	string message=2;
+	int32 state=3;//0聊天，1创建房间，2加入房间，3退出房间
+}
+message LoginPack
+{
+	//用户名
+       string username=1;
+	//密码
+       string password=2;                                            
+}
+message RoomPack
+{
+	//房间编号
+       string roomid=1;
+	//房间最大人数
+       int32 maxnum=2;
+	//房间当前人数
+       int32 curnum=3;
+	//状态
+       RoomState state=4; 
+}
+message FriendRoomPack
+{
+	//房间编号
+       string roomid=1;
+	//房间最大人数
+       int32 maxnum=2;
+	//房间当前人数
+       int32 curnum=3;
+	//状态
+      RoomState state=4; 
+}
+message PlayerPack
+{
+       //用户名
+       string username=1;
+       //玩家名
+       string playername=2;
+       //UID
+       int32 id=3;
+       PlayerState state=4;
+       Hero  hero=5;
+       Model model=6;
+}
